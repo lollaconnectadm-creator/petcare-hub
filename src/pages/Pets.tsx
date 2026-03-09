@@ -268,8 +268,15 @@ export default function Pets() {
                   <TableCell className="hidden md:table-cell text-muted-foreground">{pet.raca || '-'}</TableCell>
                   <TableCell className="hidden sm:table-cell">
                     {pet.porte && (
-                      <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                      <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
                         {pet.porte}
+                      </span>
+                    )}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {pet.servico && (
+                      <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-transparent bg-primary/10 text-primary">
+                        {pet.servico === 'banho_tosa' ? 'Banho e Tosa' : pet.servico === 'banho' ? 'Banho' : 'Tosa'}
                       </span>
                     )}
                   </TableCell>
