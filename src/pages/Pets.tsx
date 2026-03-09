@@ -112,7 +112,7 @@ export default function Pets() {
       toast({ variant: "destructive", title: "Erro", description: "Selecione um tutor." });
       return;
     }
-    createPet.mutate({ nome, tutor_id: tutorId, raca, idade, porte, observacoes });
+    createPet.mutate({ nome, tutor_id: tutorId, raca, idade, porte, observacoes, servico: servico || null });
   };
 
   const filteredPets = pets.filter(pet => 
