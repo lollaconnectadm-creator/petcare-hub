@@ -22,6 +22,7 @@ export function Layout() {
     { name: "Pets", path: "/pets", icon: Dog },
     { name: "Funcionários", path: "/funcionarios", icon: UserCog },
     { name: "Serviços", path: "/servicos", icon: Wrench },
+    { name: "Hotelzinho", path: "/hospedagens", icon: Hotel },
   ];
 
   const handleLogout = async () => {
