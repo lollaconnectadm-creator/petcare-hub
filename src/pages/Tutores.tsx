@@ -137,9 +137,9 @@ export default function Tutores() {
           <p className="text-muted-foreground mt-1">Gerencie os clientes e donos dos pets.</p>
         </div>
         
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <Sheet open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) resetForm(); }}>
           <SheetTrigger asChild>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={() => { resetForm(); setIsOpen(true); }}>
               <Plus className="h-4 w-4" />
               Novo Tutor
             </Button>
