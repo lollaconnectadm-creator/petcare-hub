@@ -242,6 +242,7 @@ export default function Pets() {
               <TableHead>Tutor</TableHead>
               <TableHead className="hidden md:table-cell">Raça</TableHead>
               <TableHead className="hidden sm:table-cell">Porte</TableHead>
+              <TableHead className="hidden md:table-cell">Serviço</TableHead>
               <TableHead className="hidden lg:table-cell">Idade</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
