@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 export default function Tutores() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -56,11 +57,25 @@ export default function Tutores() {
       resetForm();
     },
     onError: (error: any) => {
-      toast({
-        variant: "destructive",
-        title: "Erro ao cadastrar tutor",
-        description: error.message,
-      });
+      toast({ variant: "destructive", title: "Erro ao cadastrar tutor", description: error.message });
+    }
+  });
+
+  const updateTutor = useMutation({
+    mutationFn: async ({ id, ...updates }: any) => {
+      const { data, error } = await supabase.from('tutores').update(updates).eq('id', id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tutores'] });
+      toast({ title: "Tutor atualizado com sucesso!" });
+      setIsOpen(false);
+      setEditingId(null);
+      resetForm();
+    },
+    onError: (error: any) => {
+      toast({ variant: "destructive", title: "Erro ao atualizar", description: error.message });
     }
   });
 
@@ -88,11 +103,26 @@ export default function Tutores() {
     setEmail("");
     setEndereco("");
     setObservacoes("");
+    setEditingId(null);
+  };
+
+  const handleEdit = (tutor: any) => {
+    setEditingId(tutor.id);
+    setNome(tutor.nome);
+    setTelefone(tutor.telefone || "");
+    setEmail(tutor.email || "");
+    setEndereco(tutor.endereco || "");
+    setObservacoes(tutor.observacoes || "");
+    setIsOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    createTutor.mutate({ nome, telefone, email, endereco, observacoes });
+    if (editingId) {
+      updateTutor.mutate({ id: editingId, nome, telefone, email, endereco, observacoes });
+    } else {
+      createTutor.mutate({ nome, telefone, email, endereco, observacoes });
+    }
   };
 
   const filteredTutores = tutores.filter(tutor => 
@@ -107,18 +137,18 @@ export default function Tutores() {
           <p className="text-muted-foreground mt-1">Gerencie os clientes e donos dos pets.</p>
         </div>
         
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <Sheet open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) resetForm(); }}>
           <SheetTrigger asChild>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={() => { resetForm(); setIsOpen(true); }}>
               <Plus className="h-4 w-4" />
               Novo Tutor
             </Button>
           </SheetTrigger>
           <SheetContent className="sm:max-w-md overflow-y-auto">
             <SheetHeader>
-              <SheetTitle>Cadastrar Novo Tutor</SheetTitle>
+              <SheetTitle>{editingId ? "Editar Tutor" : "Cadastrar Novo Tutor"}</SheetTitle>
               <SheetDescription>
-                Preencha os dados abaixo para registrar um novo cliente no sistema.
+                {editingId ? "Altere os dados do tutor." : "Preencha os dados abaixo para registrar um novo cliente no sistema."}
               </SheetDescription>
             </SheetHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-6">
@@ -149,9 +179,9 @@ export default function Tutores() {
                 />
               </div>
               <div className="pt-4 flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>Cancelar</Button>
-                <Button type="submit" disabled={createTutor.isPending}>
-                  {createTutor.isPending ? "Salvando..." : "Salvar Tutor"}
+                <Button type="button" variant="outline" onClick={() => { setIsOpen(false); resetForm(); }}>Cancelar</Button>
+                <Button type="submit" disabled={createTutor.isPending || updateTutor.isPending}>
+                  {(createTutor.isPending || updateTutor.isPending) ? "Salvando..." : editingId ? "Atualizar Tutor" : "Salvar Tutor"}
                 </Button>
               </div>
             </form>
@@ -204,7 +234,7 @@ export default function Tutores() {
                   <TableCell className="hidden lg:table-cell text-muted-foreground truncate max-w-[200px]">{tutor.endereco || '-'}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10" onClick={() => handleEdit(tutor)}>
                         <Edit className="h-4 w-4" />
                       </Button>
                       <Button 

@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 export default function Pets() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -96,6 +97,24 @@ export default function Pets() {
     }
   });
 
+  const updatePet = useMutation({
+    mutationFn: async ({ id, ...updates }: any) => {
+      const { data, error } = await supabase.from('pets').update(updates).eq('id', id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['pets'] });
+      toast({ title: "Pet atualizado com sucesso!" });
+      setIsOpen(false);
+      setEditingId(null);
+      resetForm();
+    },
+    onError: (error: any) => {
+      toast({ variant: "destructive", title: "Erro ao atualizar", description: error.message });
+    }
+  });
+
   const resetForm = () => {
     setNome("");
     setTutorId("");
@@ -104,6 +123,19 @@ export default function Pets() {
     setPorte("");
     setObservacoes("");
     setServico("");
+    setEditingId(null);
+  };
+
+  const handleEdit = (pet: any) => {
+    setEditingId(pet.id);
+    setNome(pet.nome);
+    setTutorId(pet.tutor_id);
+    setRaca(pet.raca || "");
+    setIdade(pet.idade || "");
+    setPorte(pet.porte || "");
+    setObservacoes(pet.observacoes || "");
+    setServico(pet.servico || "");
+    setIsOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -112,7 +144,12 @@ export default function Pets() {
       toast({ variant: "destructive", title: "Erro", description: "Selecione um tutor." });
       return;
     }
-    createPet.mutate({ nome, tutor_id: tutorId, raca, idade, porte, observacoes, servico: servico || null });
+    const payload = { nome, tutor_id: tutorId, raca, idade, porte, observacoes, servico: servico || null };
+    if (editingId) {
+      updatePet.mutate({ id: editingId, ...payload });
+    } else {
+      createPet.mutate(payload);
+    }
   };
 
   const filteredPets = pets.filter(pet => 
@@ -128,18 +165,18 @@ export default function Pets() {
           <p className="text-muted-foreground mt-1">Gerencie os animais cadastrados no sistema.</p>
         </div>
         
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <Sheet open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) resetForm(); }}>
           <SheetTrigger asChild>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={() => { resetForm(); setIsOpen(true); }}>
               <Plus className="h-4 w-4" />
               Novo Pet
             </Button>
           </SheetTrigger>
           <SheetContent className="sm:max-w-md overflow-y-auto">
             <SheetHeader>
-              <SheetTitle>Cadastrar Novo Pet</SheetTitle>
+              <SheetTitle>{editingId ? "Editar Pet" : "Cadastrar Novo Pet"}</SheetTitle>
               <SheetDescription>
-                Preencha os dados do animal e vincule-o a um tutor existente.
+                {editingId ? "Altere os dados do animal." : "Preencha os dados do animal e vincule-o a um tutor existente."}
               </SheetDescription>
             </SheetHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-6">
@@ -212,9 +249,9 @@ export default function Pets() {
                 />
               </div>
               <div className="pt-4 flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>Cancelar</Button>
-                <Button type="submit" disabled={createPet.isPending}>
-                  {createPet.isPending ? "Salvando..." : "Salvar Pet"}
+                <Button type="button" variant="outline" onClick={() => { setIsOpen(false); resetForm(); }}>Cancelar</Button>
+                <Button type="submit" disabled={createPet.isPending || updatePet.isPending}>
+                  {(createPet.isPending || updatePet.isPending) ? "Salvando..." : editingId ? "Atualizar Pet" : "Salvar Pet"}
                 </Button>
               </div>
             </form>
@@ -283,7 +320,7 @@ export default function Pets() {
                   <TableCell className="hidden lg:table-cell text-muted-foreground">{pet.idade || '-'}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10" onClick={() => handleEdit(pet)}>
                         <Edit className="h-4 w-4" />
                       </Button>
                       <Button 
