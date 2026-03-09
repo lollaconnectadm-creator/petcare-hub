@@ -179,9 +179,9 @@ export default function Tutores() {
                 />
               </div>
               <div className="pt-4 flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>Cancelar</Button>
-                <Button type="submit" disabled={createTutor.isPending}>
-                  {createTutor.isPending ? "Salvando..." : "Salvar Tutor"}
+                <Button type="button" variant="outline" onClick={() => { setIsOpen(false); resetForm(); }}>Cancelar</Button>
+                <Button type="submit" disabled={createTutor.isPending || updateTutor.isPending}>
+                  {(createTutor.isPending || updateTutor.isPending) ? "Salvando..." : editingId ? "Atualizar Tutor" : "Salvar Tutor"}
                 </Button>
               </div>
             </form>
