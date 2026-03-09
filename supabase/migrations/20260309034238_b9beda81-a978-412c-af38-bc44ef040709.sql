@@ -1,0 +1,1 @@
+ALTER TABLE public.pets ADD COLUMN servico public.servico_tipo NULL;

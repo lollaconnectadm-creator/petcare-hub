@@ -22,6 +22,7 @@ export default function Pets() {
   const [idade, setIdade] = useState("");
   const [porte, setPorte] = useState("");
   const [observacoes, setObservacoes] = useState("");
+  const [servico, setServico] = useState("");
 
   const { data: tutores = [] } = useQuery({
     queryKey: ['tutores'],
@@ -102,6 +103,7 @@ export default function Pets() {
     setIdade("");
     setPorte("");
     setObservacoes("");
+    setServico("");
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -110,7 +112,7 @@ export default function Pets() {
       toast({ variant: "destructive", title: "Erro", description: "Selecione um tutor." });
       return;
     }
-    createPet.mutate({ nome, tutor_id: tutorId, raca, idade, porte, observacoes });
+    createPet.mutate({ nome, tutor_id: tutorId, raca, idade, porte, observacoes, servico: servico || null });
   };
 
   const filteredPets = pets.filter(pet => 
@@ -186,6 +188,20 @@ export default function Pets() {
                 </select>
               </div>
               <div className="space-y-2">
+                <Label htmlFor="servico">Serviço Atribuído</Label>
+                <select 
+                  id="servico" 
+                  value={servico}
+                  onChange={e => setServico(e.target.value)}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <option value="">Selecione...</option>
+                  <option value="banho">Banho</option>
+                  <option value="tosa">Tosa</option>
+                  <option value="banho_tosa">Banho e Tosa</option>
+                </select>
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="observacoes">Observações (Alergias, Comportamento)</Label>
                 <textarea 
                   id="observacoes" 
@@ -226,6 +242,7 @@ export default function Pets() {
               <TableHead>Tutor</TableHead>
               <TableHead className="hidden md:table-cell">Raça</TableHead>
               <TableHead className="hidden sm:table-cell">Porte</TableHead>
+              <TableHead className="hidden md:table-cell">Serviço</TableHead>
               <TableHead className="hidden lg:table-cell">Idade</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
@@ -233,13 +250,13 @@ export default function Pets() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                   Carregando pets...
                 </TableCell>
               </TableRow>
             ) : filteredPets.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                   Nenhum pet encontrado.
                 </TableCell>
               </TableRow>
@@ -251,8 +268,15 @@ export default function Pets() {
                   <TableCell className="hidden md:table-cell text-muted-foreground">{pet.raca || '-'}</TableCell>
                   <TableCell className="hidden sm:table-cell">
                     {pet.porte && (
-                      <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                      <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
                         {pet.porte}
+                      </span>
+                    )}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {pet.servico && (
+                      <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-transparent bg-primary/10 text-primary">
+                        {pet.servico === 'banho_tosa' ? 'Banho e Tosa' : pet.servico === 'banho' ? 'Banho' : 'Tosa'}
                       </span>
                     )}
                   </TableCell>
