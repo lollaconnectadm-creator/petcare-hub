@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Users, Dog, Home, LogOut, Menu, CalendarDays } from "lucide-react";
+import { Users, Dog, Home, LogOut, Menu, CalendarDays, DollarSign } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { useState } from "react";
