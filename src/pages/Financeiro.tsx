@@ -187,7 +187,6 @@ export default function Financeiro() {
       descricao: "",
       valor: "",
       data: format(new Date(), "yyyy-MM-dd"),
-      observacoes: "",
     });
     setIsDialogOpen(true);
   };
