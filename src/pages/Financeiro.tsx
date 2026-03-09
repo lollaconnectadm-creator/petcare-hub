@@ -210,9 +210,14 @@ export default function Financeiro() {
           <h1 className="text-3xl font-bold tracking-tight">Financeiro</h1>
           <p className="text-muted-foreground">Controle de receitas e despesas</p>
         </div>
-        <Button onClick={handleNewRecord}>
-          <Plus className="mr-2 h-4 w-4" /> Nova Movimentação
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => navigate("/configuracoes")}>
+            <Settings className="mr-2 h-4 w-4" /> Categorias
+          </Button>
+          <Button onClick={handleNewRecord}>
+            <Plus className="mr-2 h-4 w-4" /> Nova Movimentação
+          </Button>
+        </div>
       </div>
 
       {/* Month navigation */}
