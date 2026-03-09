@@ -188,6 +188,20 @@ export default function Pets() {
                 </select>
               </div>
               <div className="space-y-2">
+                <Label htmlFor="servico">Serviço Atribuído</Label>
+                <select 
+                  id="servico" 
+                  value={servico}
+                  onChange={e => setServico(e.target.value)}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <option value="">Selecione...</option>
+                  <option value="banho">Banho</option>
+                  <option value="tosa">Tosa</option>
+                  <option value="banho_tosa">Banho e Tosa</option>
+                </select>
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="observacoes">Observações (Alergias, Comportamento)</Label>
                 <textarea 
                   id="observacoes" 
