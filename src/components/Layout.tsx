@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import {
   Users, Dog, Home, LogOut, Menu, CalendarDays, DollarSign,
-  CalendarRange, UserCog, Wrench, Hotel,
+  CalendarRange, UserCog, Wrench, Hotel, Settings,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent } from "./ui/sheet";
