@@ -120,7 +120,7 @@ export default function Configuracoes() {
         .order("tipo")
         .order("nome");
       if (error) throw error;
-      return data as Categoria[];
+      return (data as unknown) as Categoria[];
     },
   });
 
