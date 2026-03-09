@@ -14,10 +14,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      agenda_funcionario: {
+        Row: {
+          agendamento_id: string
+          created_at: string
+          funcionario_id: string
+          id: string
+        }
+        Insert: {
+          agendamento_id: string
+          created_at?: string
+          funcionario_id: string
+          id?: string
+        }
+        Update: {
+          agendamento_id?: string
+          created_at?: string
+          funcionario_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agenda_funcionario_agendamento_id_fkey"
+            columns: ["agendamento_id"]
+            isOneToOne: false
+            referencedRelation: "agendamentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agenda_funcionario_funcionario_id_fkey"
+            columns: ["funcionario_id"]
+            isOneToOne: false
+            referencedRelation: "funcionarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agendamentos: {
         Row: {
           created_at: string
           data: string
+          funcionario_id: string | null
           horario: string
           id: string
           observacoes: string | null
@@ -31,6 +68,7 @@ export type Database = {
         Insert: {
           created_at?: string
           data: string
+          funcionario_id?: string | null
           horario: string
           id?: string
           observacoes?: string | null
@@ -44,6 +82,7 @@ export type Database = {
         Update: {
           created_at?: string
           data?: string
+          funcionario_id?: string | null
           horario?: string
           id?: string
           observacoes?: string | null
@@ -55,6 +94,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "agendamentos_funcionario_id_fkey"
+            columns: ["funcionario_id"]
+            isOneToOne: false
+            referencedRelation: "funcionarios"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "agendamentos_pet_id_fkey"
             columns: ["pet_id"]
@@ -70,6 +116,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      configuracoes: {
+        Row: {
+          banhos_por_hora: number
+          created_at: string
+          id: string
+          max_hotel: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          banhos_por_hora?: number
+          created_at?: string
+          id?: string
+          max_hotel?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          banhos_por_hora?: number
+          created_at?: string
+          id?: string
+          max_hotel?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       financeiro: {
         Row: {
@@ -128,6 +201,39 @@ export type Database = {
           },
         ]
       }
+      funcionarios: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          funcao: Database["public"]["Enums"]["funcao_tipo"]
+          id: string
+          nome: string
+          telefone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          funcao: Database["public"]["Enums"]["funcao_tipo"]
+          id?: string
+          nome: string
+          telefone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          funcao?: Database["public"]["Enums"]["funcao_tipo"]
+          id?: string
+          nome?: string
+          telefone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pets: {
         Row: {
           created_at: string
@@ -174,6 +280,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      servicos: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          duracao_media: number
+          id: string
+          nome: string
+          preco_base: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          duracao_media?: number
+          id?: string
+          nome: string
+          preco_base?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          duracao_media?: number
+          id?: string
+          nome?: string
+          preco_base?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       tutores: {
         Row: {
@@ -225,6 +364,12 @@ export type Database = {
         | "concluido"
         | "cancelado"
       financeiro_tipo: "receita" | "despesa"
+      funcao_tipo:
+        | "banhista"
+        | "tosador"
+        | "recepcao"
+        | "veterinario"
+        | "auxiliar"
       servico_tipo: "banho" | "tosa" | "banho_tosa"
     }
     CompositeTypes: {
@@ -360,6 +505,13 @@ export const Constants = {
         "cancelado",
       ],
       financeiro_tipo: ["receita", "despesa"],
+      funcao_tipo: [
+        "banhista",
+        "tosador",
+        "recepcao",
+        "veterinario",
+        "auxiliar",
+      ],
       servico_tipo: ["banho", "tosa", "banho_tosa"],
     },
   },
