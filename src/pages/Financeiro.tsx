@@ -175,7 +175,6 @@ export default function Financeiro() {
       descricao: registro.descricao,
       valor: String(registro.valor),
       data: registro.data,
-      observacoes: "",
     });
     setIsDialogOpen(true);
   };
