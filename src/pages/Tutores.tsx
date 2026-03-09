@@ -103,11 +103,26 @@ export default function Tutores() {
     setEmail("");
     setEndereco("");
     setObservacoes("");
+    setEditingId(null);
+  };
+
+  const handleEdit = (tutor: any) => {
+    setEditingId(tutor.id);
+    setNome(tutor.nome);
+    setTelefone(tutor.telefone || "");
+    setEmail(tutor.email || "");
+    setEndereco(tutor.endereco || "");
+    setObservacoes(tutor.observacoes || "");
+    setIsOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    createTutor.mutate({ nome, telefone, email, endereco, observacoes });
+    if (editingId) {
+      updateTutor.mutate({ id: editingId, nome, telefone, email, endereco, observacoes });
+    } else {
+      createTutor.mutate({ nome, telefone, email, endereco, observacoes });
+    }
   };
 
   const filteredTutores = tutores.filter(tutor => 
