@@ -4,15 +4,16 @@ import { format, startOfMonth, endOfMonth, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
   Plus, Loader2, TrendingUp, TrendingDown, DollarSign, Wallet,
-  Trash2, Pencil,
+  Trash2, Pencil, Settings,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
+  Dialog, DialogContent, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
@@ -21,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -32,8 +32,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
 
-const categoriasReceita = ["Banho", "Tosa", "Hospedagem", "Outros serviços"];
-const categoriasDespesa = ["Produtos", "Salários", "Contas", "Manutenção"];
+type Categoria = { id: string; nome: string; tipo: "receita" | "despesa" };
 
 const formSchema = z.object({
   tipo: z.enum(["receita", "despesa"]),
@@ -44,12 +43,12 @@ const formSchema = z.object({
     "Valor deve ser maior que zero"
   ),
   data: z.string().min(1, "Informe a data"),
-  observacoes: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function Financeiro() {
+  const navigate = useNavigate();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -66,11 +65,26 @@ export default function Financeiro() {
       descricao: "",
       valor: "",
       data: format(new Date(), "yyyy-MM-dd"),
-      observacoes: "",
     },
   });
 
   const tipoWatch = form.watch("tipo");
+
+  // Fetch categories
+  const { data: categorias = [] } = useQuery<Categoria[]>({
+    queryKey: ["categorias_financeiro"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("categorias_financeiro" as any)
+        .select("*")
+        .order("nome");
+      if (error) throw error;
+      return (data as unknown) as Categoria[];
+    },
+  });
+
+  const categoriasReceita = categorias.filter((c) => c.tipo === "receita").map((c) => c.nome);
+  const categoriasDespesa = categorias.filter((c) => c.tipo === "despesa").map((c) => c.nome);
 
   // Fetch financeiro for month
   const { data: registros = [], isLoading } = useQuery({
@@ -161,7 +175,6 @@ export default function Financeiro() {
       descricao: registro.descricao,
       valor: String(registro.valor),
       data: registro.data,
-      observacoes: "",
     });
     setIsDialogOpen(true);
   };
@@ -174,7 +187,6 @@ export default function Financeiro() {
       descricao: "",
       valor: "",
       data: format(new Date(), "yyyy-MM-dd"),
-      observacoes: "",
     });
     setIsDialogOpen(true);
   };
@@ -198,9 +210,14 @@ export default function Financeiro() {
           <h1 className="text-3xl font-bold tracking-tight">Financeiro</h1>
           <p className="text-muted-foreground">Controle de receitas e despesas</p>
         </div>
-        <Button onClick={handleNewRecord}>
-          <Plus className="mr-2 h-4 w-4" /> Nova Movimentação
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => navigate("/configuracoes")}>
+            <Settings className="mr-2 h-4 w-4" /> Categorias
+          </Button>
+          <Button onClick={handleNewRecord}>
+            <Plus className="mr-2 h-4 w-4" /> Nova Movimentação
+          </Button>
+        </div>
       </div>
 
       {/* Month navigation */}

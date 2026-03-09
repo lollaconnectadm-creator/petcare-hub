@@ -14,6 +14,7 @@ import Financeiro from "./pages/Financeiro";
 import Funcionarios from "./pages/Funcionarios";
 import Servicos from "./pages/Servicos";
 import Hospedagens from "./pages/Hospedagens";
+import Configuracoes from "./pages/Configuracoes";
 import NotFound from "./pages/NotFound";
 import { useEffect, useState } from "react";
 import { supabase } from "./integrations/supabase/client";
@@ -70,6 +71,7 @@ const App = () => {
               <Route path="/funcionarios" element={<Funcionarios />} />
               <Route path="/servicos" element={<Servicos />} />
               <Route path="/hospedagens" element={<Hospedagens />} />
+              <Route path="/configuracoes" element={<Configuracoes />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             </Route>
             <Route path="*" element={<NotFound />} />
