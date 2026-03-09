@@ -146,9 +146,9 @@ export default function Tutores() {
           </SheetTrigger>
           <SheetContent className="sm:max-w-md overflow-y-auto">
             <SheetHeader>
-              <SheetTitle>Cadastrar Novo Tutor</SheetTitle>
+              <SheetTitle>{editingId ? "Editar Tutor" : "Cadastrar Novo Tutor"}</SheetTitle>
               <SheetDescription>
-                Preencha os dados abaixo para registrar um novo cliente no sistema.
+                {editingId ? "Altere os dados do tutor." : "Preencha os dados abaixo para registrar um novo cliente no sistema."}
               </SheetDescription>
             </SheetHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-6">
