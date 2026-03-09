@@ -48,6 +48,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function Financeiro() {
+  const navigate = useNavigate();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -64,11 +65,26 @@ export default function Financeiro() {
       descricao: "",
       valor: "",
       data: format(new Date(), "yyyy-MM-dd"),
-      observacoes: "",
     },
   });
 
   const tipoWatch = form.watch("tipo");
+
+  // Fetch categories
+  const { data: categorias = [] } = useQuery<Categoria[]>({
+    queryKey: ["categorias_financeiro"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("categorias_financeiro" as any)
+        .select("*")
+        .order("nome");
+      if (error) throw error;
+      return (data as unknown) as Categoria[];
+    },
+  });
+
+  const categoriasReceita = categorias.filter((c) => c.tipo === "receita").map((c) => c.nome);
+  const categoriasDespesa = categorias.filter((c) => c.tipo === "despesa").map((c) => c.nome);
 
   // Fetch financeiro for month
   const { data: registros = [], isLoading } = useQuery({
