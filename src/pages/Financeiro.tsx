@@ -4,15 +4,16 @@ import { format, startOfMonth, endOfMonth, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
   Plus, Loader2, TrendingUp, TrendingDown, DollarSign, Wallet,
-  Trash2, Pencil,
+  Trash2, Pencil, Settings,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
+  Dialog, DialogContent, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
@@ -21,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -32,8 +32,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
 
-const categoriasReceita = ["Banho", "Tosa", "Hospedagem", "Outros serviços"];
-const categoriasDespesa = ["Produtos", "Salários", "Contas", "Manutenção"];
+type Categoria = { id: string; nome: string; tipo: "receita" | "despesa" };
 
 const formSchema = z.object({
   tipo: z.enum(["receita", "despesa"]),
@@ -44,7 +43,6 @@ const formSchema = z.object({
     "Valor deve ser maior que zero"
   ),
   data: z.string().min(1, "Informe a data"),
-  observacoes: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
