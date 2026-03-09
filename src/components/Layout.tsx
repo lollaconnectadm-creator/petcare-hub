@@ -23,6 +23,7 @@ export function Layout() {
     { name: "Funcionários", path: "/funcionarios", icon: UserCog },
     { name: "Serviços", path: "/servicos", icon: Wrench },
     { name: "Hotelzinho", path: "/hospedagens", icon: Hotel },
+    { name: "Configurações", path: "/configuracoes", icon: Settings },
   ];
 
   const handleLogout = async () => {
