@@ -165,18 +165,18 @@ export default function Pets() {
           <p className="text-muted-foreground mt-1">Gerencie os animais cadastrados no sistema.</p>
         </div>
         
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <Sheet open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) resetForm(); }}>
           <SheetTrigger asChild>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={() => { resetForm(); setIsOpen(true); }}>
               <Plus className="h-4 w-4" />
               Novo Pet
             </Button>
           </SheetTrigger>
           <SheetContent className="sm:max-w-md overflow-y-auto">
             <SheetHeader>
-              <SheetTitle>Cadastrar Novo Pet</SheetTitle>
+              <SheetTitle>{editingId ? "Editar Pet" : "Cadastrar Novo Pet"}</SheetTitle>
               <SheetDescription>
-                Preencha os dados do animal e vincule-o a um tutor existente.
+                {editingId ? "Altere os dados do animal." : "Preencha os dados do animal e vincule-o a um tutor existente."}
               </SheetDescription>
             </SheetHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-6">
