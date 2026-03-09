@@ -10,6 +10,7 @@ export function Layout() {
 
   const navItems = [
     { name: "Dashboard", path: "/", icon: Home },
+    { name: "Agendamentos", path: "/agendamentos", icon: CalendarDays },
     { name: "Tutores", path: "/tutores", icon: Users },
     { name: "Pets", path: "/pets", icon: Dog },
   ];
