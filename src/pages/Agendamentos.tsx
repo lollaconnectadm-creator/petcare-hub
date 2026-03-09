@@ -460,7 +460,7 @@ export default function Agendamentos() {
                           <Button 
                             variant="outline" 
                             size="sm"
-                            className="bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 border-blue-200"
+                            className="text-primary border-primary hover:bg-primary/10"
                             onClick={() => updateStatusMutation.mutate({ id: agendamento.id, status: 'confirmado' })}
                             disabled={updateStatusMutation.isPending}
                           >
@@ -469,7 +469,7 @@ export default function Agendamentos() {
                           <Button 
                             variant="outline" 
                             size="sm"
-                            className="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 border-red-200"
+                            className="text-destructive border-destructive hover:bg-destructive/10"
                             onClick={() => updateStatusMutation.mutate({ id: agendamento.id, status: 'cancelado' })}
                             disabled={updateStatusMutation.isPending}
                           >
@@ -480,9 +480,8 @@ export default function Agendamentos() {
                       
                       {agendamento.status === 'confirmado' && (
                         <Button 
-                          variant="outline" 
+                          variant="default" 
                           size="sm"
-                          className="bg-green-50 text-green-600 hover:bg-green-100 hover:text-green-700 border-green-200"
                           onClick={() => updateStatusMutation.mutate({ id: agendamento.id, status: 'concluido' })}
                           disabled={updateStatusMutation.isPending}
                         >
