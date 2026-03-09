@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 export default function Pets() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
