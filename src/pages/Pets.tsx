@@ -22,6 +22,7 @@ export default function Pets() {
   const [idade, setIdade] = useState("");
   const [porte, setPorte] = useState("");
   const [observacoes, setObservacoes] = useState("");
+  const [servico, setServico] = useState("");
 
   const { data: tutores = [] } = useQuery({
     queryKey: ['tutores'],
