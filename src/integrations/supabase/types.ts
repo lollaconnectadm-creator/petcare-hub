@@ -71,6 +71,63 @@ export type Database = {
           },
         ]
       }
+      financeiro: {
+        Row: {
+          categoria: string
+          created_at: string
+          data: string
+          descricao: string
+          id: string
+          pet_id: string | null
+          tipo: Database["public"]["Enums"]["financeiro_tipo"]
+          tutor_id: string | null
+          updated_at: string
+          user_id: string
+          valor: number
+        }
+        Insert: {
+          categoria: string
+          created_at?: string
+          data?: string
+          descricao: string
+          id?: string
+          pet_id?: string | null
+          tipo: Database["public"]["Enums"]["financeiro_tipo"]
+          tutor_id?: string | null
+          updated_at?: string
+          user_id: string
+          valor?: number
+        }
+        Update: {
+          categoria?: string
+          created_at?: string
+          data?: string
+          descricao?: string
+          id?: string
+          pet_id?: string | null
+          tipo?: Database["public"]["Enums"]["financeiro_tipo"]
+          tutor_id?: string | null
+          updated_at?: string
+          user_id?: string
+          valor?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financeiro_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financeiro_tutor_id_fkey"
+            columns: ["tutor_id"]
+            isOneToOne: false
+            referencedRelation: "tutores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pets: {
         Row: {
           created_at: string
@@ -167,6 +224,7 @@ export type Database = {
         | "confirmado"
         | "concluido"
         | "cancelado"
+      financeiro_tipo: "receita" | "despesa"
       servico_tipo: "banho" | "tosa" | "banho_tosa"
     }
     CompositeTypes: {
@@ -301,6 +359,7 @@ export const Constants = {
         "concluido",
         "cancelado",
       ],
+      financeiro_tipo: ["receita", "despesa"],
       servico_tipo: ["banho", "tosa", "banho_tosa"],
     },
   },

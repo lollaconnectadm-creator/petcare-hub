@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Users, Dog, Home, LogOut, Menu, CalendarDays } from "lucide-react";
+import { Users, Dog, Home, LogOut, Menu, CalendarDays, DollarSign } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { useState } from "react";
@@ -11,6 +11,7 @@ export function Layout() {
   const navItems = [
     { name: "Dashboard", path: "/", icon: Home },
     { name: "Agendamentos", path: "/agendamentos", icon: CalendarDays },
+    { name: "Financeiro", path: "/financeiro", icon: DollarSign },
     { name: "Tutores", path: "/tutores", icon: Users },
     { name: "Pets", path: "/pets", icon: Dog },
   ];
