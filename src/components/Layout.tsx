@@ -62,11 +62,9 @@ export function Layout() {
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
         <header className="flex h-16 items-center border-b bg-card px-4 md:hidden">
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" onClick={() => setIsOpen(true)}>
-              <Menu className="h-6 w-6" />
-            </Button>
-          </SheetTrigger>
+          <Button variant="ghost" size="icon" onClick={() => setIsOpen(true)}>
+            <Menu className="h-6 w-6" />
+          </Button>
           <span className="ml-4 text-lg font-semibold">PetSystem</span>
         </header>
         <main className="flex-1 p-6 lg:p-8">
