@@ -97,6 +97,24 @@ export default function Pets() {
     }
   });
 
+  const updatePet = useMutation({
+    mutationFn: async ({ id, ...updates }: any) => {
+      const { data, error } = await supabase.from('pets').update(updates).eq('id', id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['pets'] });
+      toast({ title: "Pet atualizado com sucesso!" });
+      setIsOpen(false);
+      setEditingId(null);
+      resetForm();
+    },
+    onError: (error: any) => {
+      toast({ variant: "destructive", title: "Erro ao atualizar", description: error.message });
+    }
+  });
+
   const resetForm = () => {
     setNome("");
     setTutorId("");
@@ -105,6 +123,19 @@ export default function Pets() {
     setPorte("");
     setObservacoes("");
     setServico("");
+    setEditingId(null);
+  };
+
+  const handleEdit = (pet: any) => {
+    setEditingId(pet.id);
+    setNome(pet.nome);
+    setTutorId(pet.tutor_id);
+    setRaca(pet.raca || "");
+    setIdade(pet.idade || "");
+    setPorte(pet.porte || "");
+    setObservacoes(pet.observacoes || "");
+    setServico(pet.servico || "");
+    setIsOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -113,7 +144,12 @@ export default function Pets() {
       toast({ variant: "destructive", title: "Erro", description: "Selecione um tutor." });
       return;
     }
-    createPet.mutate({ nome, tutor_id: tutorId, raca, idade, porte, observacoes, servico: servico || null });
+    const payload = { nome, tutor_id: tutorId, raca, idade, porte, observacoes, servico: servico || null };
+    if (editingId) {
+      updatePet.mutate({ id: editingId, ...payload });
+    } else {
+      createPet.mutate(payload);
+    }
   };
 
   const filteredPets = pets.filter(pet => 
