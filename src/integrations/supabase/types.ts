@@ -14,6 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      agendamentos: {
+        Row: {
+          created_at: string
+          data: string
+          horario: string
+          id: string
+          observacoes: string | null
+          pet_id: string
+          servico: Database["public"]["Enums"]["servico_tipo"]
+          status: Database["public"]["Enums"]["agendamento_status"]
+          tutor_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data: string
+          horario: string
+          id?: string
+          observacoes?: string | null
+          pet_id: string
+          servico: Database["public"]["Enums"]["servico_tipo"]
+          status?: Database["public"]["Enums"]["agendamento_status"]
+          tutor_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: string
+          horario?: string
+          id?: string
+          observacoes?: string | null
+          pet_id?: string
+          servico?: Database["public"]["Enums"]["servico_tipo"]
+          status?: Database["public"]["Enums"]["agendamento_status"]
+          tutor_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agendamentos_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agendamentos_tutor_id_fkey"
+            columns: ["tutor_id"]
+            isOneToOne: false
+            referencedRelation: "tutores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pets: {
         Row: {
           created_at: string
@@ -105,7 +162,12 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      agendamento_status:
+        | "solicitado"
+        | "confirmado"
+        | "concluido"
+        | "cancelado"
+      servico_tipo: "banho" | "tosa" | "banho_tosa"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -232,6 +294,14 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      agendamento_status: [
+        "solicitado",
+        "confirmado",
+        "concluido",
+        "cancelado",
+      ],
+      servico_tipo: ["banho", "tosa", "banho_tosa"],
+    },
   },
 } as const
