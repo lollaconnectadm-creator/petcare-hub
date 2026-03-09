@@ -9,7 +9,10 @@ import Login from "./pages/Login";
 import Tutores from "./pages/Tutores";
 import Pets from "./pages/Pets";
 import Agendamentos from "./pages/Agendamentos";
+import AgendaProfissional from "./pages/AgendaProfissional";
 import Financeiro from "./pages/Financeiro";
+import Funcionarios from "./pages/Funcionarios";
+import Servicos from "./pages/Servicos";
 import NotFound from "./pages/NotFound";
 import { useEffect, useState } from "react";
 import { supabase } from "./integrations/supabase/client";
@@ -61,7 +64,10 @@ const App = () => {
               <Route path="/tutores" element={<Tutores />} />
               <Route path="/pets" element={<Pets />} />
               <Route path="/agendamentos" element={<Agendamentos />} />
+              <Route path="/agenda" element={<AgendaProfissional />} />
               <Route path="/financeiro" element={<Financeiro />} />
+              <Route path="/funcionarios" element={<Funcionarios />} />
+              <Route path="/servicos" element={<Servicos />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             </Route>
             <Route path="*" element={<NotFound />} />
