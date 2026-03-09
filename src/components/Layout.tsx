@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import {
   Users, Dog, Home, LogOut, Menu, CalendarDays, DollarSign,
-  CalendarRange, UserCog, Wrench,
+  CalendarRange, UserCog, Wrench, Hotel,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent } from "./ui/sheet";
@@ -22,6 +22,7 @@ export function Layout() {
     { name: "Pets", path: "/pets", icon: Dog },
     { name: "Funcionários", path: "/funcionarios", icon: UserCog },
     { name: "Serviços", path: "/servicos", icon: Wrench },
+    { name: "Hotelzinho", path: "/hospedagens", icon: Hotel },
   ];
 
   const handleLogout = async () => {
