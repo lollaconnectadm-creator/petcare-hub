@@ -253,7 +253,6 @@ export default function Pets() {
                 <Button type="submit" disabled={createPet.isPending || updatePet.isPending}>
                   {(createPet.isPending || updatePet.isPending) ? "Salvando..." : editingId ? "Atualizar Pet" : "Salvar Pet"}
                 </Button>
-                </Button>
               </div>
             </form>
           </SheetContent>
