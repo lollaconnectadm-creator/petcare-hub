@@ -177,11 +177,11 @@ export default function Agendamentos() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "solicitado": return "bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20";
-      case "confirmado": return "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20";
-      case "concluido": return "bg-green-500/10 text-green-500 hover:bg-green-500/20";
-      case "cancelado": return "bg-red-500/10 text-red-500 hover:bg-red-500/20";
-      default: return "bg-gray-500/10 text-gray-500 hover:bg-gray-500/20";
+      case "solicitado": return "bg-secondary text-secondary-foreground hover:bg-secondary/80";
+      case "confirmado": return "bg-primary/20 text-primary hover:bg-primary/30";
+      case "concluido": return "bg-primary text-primary-foreground hover:bg-primary/90";
+      case "cancelado": return "bg-destructive text-destructive-foreground hover:bg-destructive/90";
+      default: return "bg-muted text-muted-foreground";
     }
   };
 
