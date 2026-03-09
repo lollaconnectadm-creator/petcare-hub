@@ -103,6 +103,7 @@ export default function Pets() {
     setIdade("");
     setPorte("");
     setObservacoes("");
+    setServico("");
   };
 
   const handleSubmit = (e: React.FormEvent) => {
