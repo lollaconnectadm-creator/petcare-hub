@@ -1,8 +1,13 @@
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Users, Dog, Home, LogOut, Menu, CalendarDays, DollarSign } from "lucide-react";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import {
+  Users, Dog, Home, LogOut, Menu, CalendarDays, DollarSign,
+  CalendarRange, UserCog, Wrench,
+} from "lucide-react";
 import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetContent } from "./ui/sheet";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export function Layout() {
   const location = useLocation();
@@ -10,11 +15,19 @@ export function Layout() {
 
   const navItems = [
     { name: "Dashboard", path: "/", icon: Home },
+    { name: "Agenda", path: "/agenda", icon: CalendarRange },
     { name: "Agendamentos", path: "/agendamentos", icon: CalendarDays },
     { name: "Financeiro", path: "/financeiro", icon: DollarSign },
     { name: "Tutores", path: "/tutores", icon: Users },
     { name: "Pets", path: "/pets", icon: Dog },
+    { name: "Funcionários", path: "/funcionarios", icon: UserCog },
+    { name: "Serviços", path: "/servicos", icon: Wrench },
   ];
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) toast.error("Erro ao sair");
+  };
 
   const Sidebar = () => (
     <div className="flex h-full w-full flex-col gap-4 bg-sidebar p-4 text-sidebar-foreground">
@@ -39,7 +52,7 @@ export function Layout() {
           </Link>
         ))}
       </div>
-      <Button variant="ghost" className="mt-auto justify-start gap-3 w-full">
+      <Button variant="ghost" className="mt-auto justify-start gap-3 w-full" onClick={handleLogout}>
         <LogOut className="h-5 w-5" />
         Sair
       </Button>
