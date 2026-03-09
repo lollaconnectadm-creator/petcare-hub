@@ -320,7 +320,7 @@ export default function Pets() {
                   <TableCell className="hidden lg:table-cell text-muted-foreground">{pet.idade || '-'}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10" onClick={() => handleEdit(pet)}>
                         <Edit className="h-4 w-4" />
                       </Button>
                       <Button 
