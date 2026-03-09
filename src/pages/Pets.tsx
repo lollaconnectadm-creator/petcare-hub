@@ -249,9 +249,10 @@ export default function Pets() {
                 />
               </div>
               <div className="pt-4 flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>Cancelar</Button>
-                <Button type="submit" disabled={createPet.isPending}>
-                  {createPet.isPending ? "Salvando..." : "Salvar Pet"}
+                <Button type="button" variant="outline" onClick={() => { setIsOpen(false); resetForm(); }}>Cancelar</Button>
+                <Button type="submit" disabled={createPet.isPending || updatePet.isPending}>
+                  {(createPet.isPending || updatePet.isPending) ? "Salvando..." : editingId ? "Atualizar Pet" : "Salvar Pet"}
+                </Button>
                 </Button>
               </div>
             </form>
