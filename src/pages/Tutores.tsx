@@ -57,11 +57,25 @@ export default function Tutores() {
       resetForm();
     },
     onError: (error: any) => {
-      toast({
-        variant: "destructive",
-        title: "Erro ao cadastrar tutor",
-        description: error.message,
-      });
+      toast({ variant: "destructive", title: "Erro ao cadastrar tutor", description: error.message });
+    }
+  });
+
+  const updateTutor = useMutation({
+    mutationFn: async ({ id, ...updates }: any) => {
+      const { data, error } = await supabase.from('tutores').update(updates).eq('id', id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tutores'] });
+      toast({ title: "Tutor atualizado com sucesso!" });
+      setIsOpen(false);
+      setEditingId(null);
+      resetForm();
+    },
+    onError: (error: any) => {
+      toast({ variant: "destructive", title: "Erro ao atualizar", description: error.message });
     }
   });
 
