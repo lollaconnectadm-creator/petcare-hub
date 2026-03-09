@@ -150,7 +150,7 @@ export default function Hospedagens() {
         if (ocupacaoAtual >= maxVagas && (values.status === "reservado" || values.status === "hospedado")) {
           throw new Error("Capacidade máxima atingida!");
         }
-        const { error } = await supabase.from("hospedagens").insert(payload);
+        const { error } = await supabase.from("hospedagens").insert([payload as any]);
         if (error) throw error;
       }
     },
