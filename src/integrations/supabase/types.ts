@@ -14,7 +14,89 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      pets: {
+        Row: {
+          created_at: string
+          id: string
+          idade: string | null
+          nome: string
+          observacoes: string | null
+          porte: string | null
+          raca: string | null
+          tutor_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          idade?: string | null
+          nome: string
+          observacoes?: string | null
+          porte?: string | null
+          raca?: string | null
+          tutor_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          idade?: string | null
+          nome?: string
+          observacoes?: string | null
+          porte?: string | null
+          raca?: string | null
+          tutor_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pets_tutor_id_fkey"
+            columns: ["tutor_id"]
+            isOneToOne: false
+            referencedRelation: "tutores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tutores: {
+        Row: {
+          created_at: string
+          email: string | null
+          endereco: string | null
+          id: string
+          nome: string
+          observacoes: string | null
+          telefone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          endereco?: string | null
+          id?: string
+          nome: string
+          observacoes?: string | null
+          telefone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          endereco?: string | null
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          telefone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
