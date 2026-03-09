@@ -234,6 +234,69 @@ export type Database = {
         }
         Relationships: []
       }
+      hospedagens: {
+        Row: {
+          created_at: string
+          data_entrada: string
+          data_saida_prevista: string
+          data_saida_real: string | null
+          id: string
+          observacoes: string | null
+          pet_id: string
+          status: Database["public"]["Enums"]["hospedagem_status"]
+          total: number
+          tutor_id: string
+          updated_at: string
+          user_id: string
+          valor_diaria: number
+        }
+        Insert: {
+          created_at?: string
+          data_entrada: string
+          data_saida_prevista: string
+          data_saida_real?: string | null
+          id?: string
+          observacoes?: string | null
+          pet_id: string
+          status?: Database["public"]["Enums"]["hospedagem_status"]
+          total?: number
+          tutor_id: string
+          updated_at?: string
+          user_id: string
+          valor_diaria?: number
+        }
+        Update: {
+          created_at?: string
+          data_entrada?: string
+          data_saida_prevista?: string
+          data_saida_real?: string | null
+          id?: string
+          observacoes?: string | null
+          pet_id?: string
+          status?: Database["public"]["Enums"]["hospedagem_status"]
+          total?: number
+          tutor_id?: string
+          updated_at?: string
+          user_id?: string
+          valor_diaria?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hospedagens_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hospedagens_tutor_id_fkey"
+            columns: ["tutor_id"]
+            isOneToOne: false
+            referencedRelation: "tutores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pets: {
         Row: {
           created_at: string
@@ -370,6 +433,11 @@ export type Database = {
         | "recepcao"
         | "veterinario"
         | "auxiliar"
+      hospedagem_status:
+        | "reservado"
+        | "hospedado"
+        | "pronto_retirada"
+        | "finalizado"
       servico_tipo: "banho" | "tosa" | "banho_tosa"
     }
     CompositeTypes: {
@@ -511,6 +579,12 @@ export const Constants = {
         "recepcao",
         "veterinario",
         "auxiliar",
+      ],
+      hospedagem_status: [
+        "reservado",
+        "hospedado",
+        "pronto_retirada",
+        "finalizado",
       ],
       servico_tipo: ["banho", "tosa", "banho_tosa"],
     },
