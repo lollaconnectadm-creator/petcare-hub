@@ -306,6 +306,7 @@ export type Database = {
           observacoes: string | null
           porte: string | null
           raca: string | null
+          servico: Database["public"]["Enums"]["servico_tipo"] | null
           tutor_id: string
           updated_at: string
           user_id: string
@@ -318,6 +319,7 @@ export type Database = {
           observacoes?: string | null
           porte?: string | null
           raca?: string | null
+          servico?: Database["public"]["Enums"]["servico_tipo"] | null
           tutor_id: string
           updated_at?: string
           user_id: string
@@ -330,6 +332,7 @@ export type Database = {
           observacoes?: string | null
           porte?: string | null
           raca?: string | null
+          servico?: Database["public"]["Enums"]["servico_tipo"] | null
           tutor_id?: string
           updated_at?: string
           user_id?: string
