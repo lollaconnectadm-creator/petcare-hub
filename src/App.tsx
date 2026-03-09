@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Tutores from "./pages/Tutores";
 import Pets from "./pages/Pets";
+import Agendamentos from "./pages/Agendamentos";
 import NotFound from "./pages/NotFound";
 import { useEffect, useState } from "react";
 import { supabase } from "./integrations/supabase/client";
